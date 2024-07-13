@@ -41,9 +41,9 @@
                             {% for productos in listaProductos %}
                             <tr>
                                 
-                                    <th scope="row">{{ productos.codigo }}</th>
-                                    <td>{{ productos.nombre_producto }}</td>
-                                    <td>{{ productos.id_marca.nombre_marca }}</td>
+                                    <th scope="row">{{ productos.id }}</th>
+                                    <td>{{ productos.nombre }}</td>
+                                    <td>{{ productos.marca }}</td>
                                     <td>{{ productos.descripcion }}</td>
                                     <td>{{ productos.precio | intcomma }}</td>
                                     <td>{{ productos.stock }}</td>
@@ -60,10 +60,10 @@
                                     
                                         <div class="container">
                                             <!--Modificar-->
-                                            <a href="{% url 'modificar' productos.codigo %}" class="btn btn-warning mb-2 " style="width: 100px;">modificar</a>
+                                            <a href="{% url 'modificar' productos.id %}" class="btn btn-warning mb-2 " style="width: 100px;">modificar</a>
                                             <br>
                                             <!--Eliminar-->
-                                            <a  href="{% url 'eliminar' productos.codigo %}" class="btn btn-danger " style="width: 100px;">eliminar</a>
+                                            <a  href="{% url 'eliminar' productos.id %}" class="btn btn-danger " style="width: 100px;">eliminar</a>
                                         </div>
                                         
                                     </td>

@@ -44,14 +44,24 @@
 
   <table id="salesTable">
     <thead>
+      
       <tr>
-        <th>Producto</th>
-        <th>Cantidad Vendida</th>
-        <th>Precio Unitario</th>
+        <th>id</th>
         <th>Total</th>
         <th>Fecha</th>
       </tr>
+      
     </thead>
+    <tbody>
+      {% for aux in listaPedidos%}
+      <tr>
+          
+              <th scope="row">{{ aux.id }}</th>
+              <td>{{ aux.precio_orden }}</td>
+              <td>{{ aux.creado_en }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>           
   <div class="container mt-3">
     <h3>Informe PDF Generado</h3>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
@@ -125,7 +135,7 @@
             });
 
             doc.autoTable({
-              head: [['Producto', 'Cantidad Vendida', 'Precio Unitario', 'Total', 'Fecha']],
+              head: [['id','Total', 'Fecha']],
               body: data
             });
 

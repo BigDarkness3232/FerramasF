@@ -5,18 +5,18 @@ from datetime import datetime
 
 class Usuario(AbstractUser):
     direccion = models.CharField(max_length=100, null=True, blank=True)
-    
+
     def __str__(self):
         return self.first_name
-    
+
 class TipoProducto(models.Model):
     nombreTipoProducto = models.CharField(max_length=50)
 
     def __str__(self):
         return self.nombreTipoProducto
 
-class Marca(models.Model):
 
+class Marca(models.Model):
     nombre_marca = models.CharField(max_length=100)
 
     def __str__(self):
@@ -48,7 +48,6 @@ class Mensaje(models.Model):
 
 #class ProductoEspecial(models.Model):
 
-
 class Carrito(models.Model):
 
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -61,6 +60,11 @@ class Carrito(models.Model):
     def subtotal_producto(self):
         precio = self.producto_carrito.precio * self.cantidad_prod
         return precio
+
+#    @property
+#    def total_descuento(self):
+#        return self.subtotal_producto * 0.95
+
 
 class EstadoOrden(models.Model):
     estado_orden = models.CharField(max_length=50)
@@ -88,7 +92,7 @@ class OrdenProducto(models.Model):
 
     def __str__(self):
         return str(self.orden)
-    
+
     @property
     def subtotal_producto(self):
         precio = self.producto.precio * self.cantidad_prod
@@ -98,10 +102,10 @@ class Suscripcion(models.Model):
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     suscrito_el = models.DateField()
     renovacion_el = models.DateField(blank=True, null=True)
-    
+
     def __str__(self):
         return str(self.id_usuario)
-    
+
     @property
     def estado_sub(self):
         #Si la fecha de hoy es mayor que la de renovacion entonces 

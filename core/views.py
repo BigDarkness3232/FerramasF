@@ -30,8 +30,8 @@ api_url = "http://127.0.0.1:5000"
 
 def index(request):
     # Obtener la lista de productos desde la API
-    respuesta_productos = requests.get('http://127.0.0.1:5000/Productos')
-    productos = respuesta_productos.json()
+    respuesta = requests.get('http://127.0.0.1:3000/api/productos')
+    productos = respuesta.json()
     # Obtener información sobre el precio del dólar desde la API de Mindicador
     respuesta_dolar = requests.get('https://mindicador.cl/api/dolar')
     dolar_data = respuesta_dolar.json()
@@ -64,7 +64,7 @@ def registro(request):
 
 
 def todosAPI(request):
-    respuesta = requests.get('http://127.0.0.1:8000/api/productos')
+    respuesta = requests.get('http://127.0.0.1:3000/api/productos')
     respuesta2 = requests.get('https://mindicador.cl/api')
     productos = respuesta.json()
     monedas = respuesta2.json()
@@ -227,10 +227,10 @@ def perfil(request):
 
 #Admin CRUD
 def menuadmin(request):
-    respuesta = requests.get('http://127.0.0.1:5000/Productos')
+    respuesta = requests.get('http://127.0.0.1:3000/api/productos')
     producto= respuesta.json()
-
-
+    
+    
     page = request.GET.get('page', 1) # OBTENEMOS LA VARIABLE DE LA URL, SI NO EXISTE NADA DEVUELVE 1
     
     try:
@@ -378,31 +378,27 @@ def carrito(request):
     return render(request, 'core/carrito.html', data)
 
 def car_agregar(request, id):
-    producto = get_object_or_404(Producto, id=id)
-    print(f"Código del producto: {id}")
-    print(f"Producto encontrado: {producto.nombre_producto}")
+    if Carrito.objects.filter(id_usuario = request.user.id).filter(producto_carrito = id).exists():
+        carrito = Carrito.objects.filter(id_usuario = request.user.id).filter(producto_carrito = id).first()
 
-    usuario = request.user
+        #Verifica que no se puedan agregar cantidades mayores al stock
+        if carrito.producto_carrito.stock == 0:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    carrito, created = Carrito.objects.get_or_create(id_usuario=usuario, producto_carrito=producto)
-    
-    # Verifica que no se puedan agregar cantidades mayores al stock
-    if producto.stock == 0:
-        messages.error(request, 'No hay stock disponible para este producto')
-        return redirect(request.META.get('HTTP_REFERER'))
+        producto_restar_stock(id, 1)
+        carrito.cantidad_prod = carrito.cantidad_prod + 1
+        carrito.save()
+        messages.success(request, 'Producto agregado')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    if not created:
-        if carrito.cantidad_prod >= producto.stock:
-            messages.error(request, 'No se puede agregar más de este producto al carrito')
-            return redirect(request.META.get('HTTP_REFERER'))
-        carrito.cantidad_prod += 1
-    else:
-        carrito.cantidad_prod = 1
-    
     producto_restar_stock(id, 1)
-    carrito.save()
+    nuevo_item_carrito = Carrito()
+    nuevo_item_carrito.id_usuario = Usuario.objects.get(id = request.user.id)
+    nuevo_item_carrito.producto_carrito = Producto.objects.get(id = id)
+    nuevo_item_carrito.cantidad_prod = 1
+    nuevo_item_carrito.save()
     messages.success(request, 'Producto agregado')
-    return redirect(request.META.get('HTTP_REFERER'))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def car_una_cantidad_menos(request, id):
     carrito = Carrito.objects.filter(id_usuario = request.user.id).filter(producto_carrito = id).first()
@@ -445,18 +441,18 @@ def car_eliminar_todo(request):
 def checkout(request):
     respuesta2 = requests.get('https://mindicador.cl/api/dolar')
     monedas = respuesta2.json()
-    productos = Carrito.objects.get(usuario = request.user)
+    productos = Carrito.objects.filter(id_usuario = request.user.id).all()
 
-    if Suscripcion.objects.filter(usuario = request.user.id).exists():
-        sub = Suscripcion.objects.filter(usuario = request.user.id).first()
+    if Suscripcion.objects.filter(id_usuario = request.user.id).exists():
+        sub = Suscripcion.objects.filter(id_usuario = request.user.id).first()
         esta_suscrito = sub.estado_sub
     else:
         esta_suscrito = False
-    
+
     precio_clp = 0
     for producto in productos:
         precio_clp = precio_clp + producto.subtotal_producto
-    
+
     descuento = round(precio_clp * 0.95)
 
     valor_usd = monedas['serie'][0]['valor']
@@ -473,9 +469,8 @@ def checkout(request):
         'is_sub' : esta_suscrito,
         'valor_dolar': valor_usd,
     }
-    
-    return render(request, 'core/checkout.html', data)
 
+    return render(request, 'core/checkout.html', data)
 
 def nuevo_pedido(request):
     #carrito y todo lo que contiene del usuario

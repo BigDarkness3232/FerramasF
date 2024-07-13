@@ -84,13 +84,13 @@
                                     {% if aux.stock == 0 %}
                                     <p>No disponible</p>
                                     {% else %}
-                                    <a href="{% url 'carrito_agregar' aux.codigo %}" class="link-secondary"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+                                    <a href="{% url 'carrito_agregar' aux.id %}" class="link-secondary"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
                                     {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-
+                    {% endfor %}
                     
 
     <div class="container-fluid p-3">

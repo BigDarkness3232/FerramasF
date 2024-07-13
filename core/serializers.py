@@ -1,5 +1,5 @@
 #Se encarga de convertir los datos
-from models import *
+from .models import *
 from rest_framework import serializers
 
 class TipoProductoSerializers(serializers.ModelSerializer):
