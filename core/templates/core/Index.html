@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block contenido %}
+
+<body>
+    <!-- Carrusel-->
+    <div id="mainCarrusel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainCarrusel" data-bs-slide-to="0" class="active" aria-current="true"
+                aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#mainCarrusel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#mainCarrusel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+
+        <div class="carousel-inner">
+
+            <div class="carousel-item active c-item">
+                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100" alt="...">
+                <div class="carousel-caption top-0 mt-2">
+                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                </div>
+            </div>
+
+            <div class="carousel-item c-item">
+                <img src="{% static 'core/img/soldar.jpg' %}" class="c-img d-block w-100" alt="...">
+                <div class="carousel-caption top-0 mt-2">
+                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                </div>
+            </div>
+
+            <div class="carousel-item c-item">
+                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100" alt="...">
+                <div class="carousel-caption top-0 mt-2">
+                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarrusel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarrusel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    </div>
+
+    <!-- Contenidos -->
+    <div class="container-fluid pt-3">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block"></div>
+            <div class="col-8 text-center">
+                <h1>Todos los productos</h1>
+            </div>
+            <div class="col-2 d-none d-lg-block"></div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-3">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block"></div>
+            <div class="col-8">
+                <div class="row" style="justify-content: center; align-items: center;">
+                    {% for aux in listaProductos %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" style="margin: 15px;">
+                        <div class="card carta-producto" style="width: 250px;">
+                            {% if aux.imagen %}
+                            <img class="card-img-top c-img" src="{{ aux.imagen }}" alt="Card image" style="height: 300px;">
+                            {% else %}
+                            <img class="card-img-top c-img" src="{% static 'core/img/imagen not found.png' %}" alt="Card image" style="height: 300px;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ aux.marca | capfirst }}</h5>
+                                <p class="card-text">{{ aux.nombre_producto | title }}</p>
+                                <h5 class="card-title">${{ aux.precio }}</h5>
+                                <p class="text-muted">Stock: {{ aux.stock }}</p>
+                            </div>
+                            <div class="card-footer mx-auto" style="border: none; text-align: center;">
+                                {% if user.is_authenticated %}
+                                    {% if aux.stock == 0 %}
+                                    <p>No disponible</p>
+                                    {% else %}
+                                    <a href="{% url 'carrito_agregar' aux.codigo %}" class="link-secondary"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-2 d-none d-lg-block"></div>
+            <div class="col-8 text-center">
+                <!-- {% include 'core/paginator.html' %} -->
+            </div>
+            <div class="col-2 d-none d-lg-block"></div>
+        </div>
+    </div>
+</body>
+{% endblock contenido %}
