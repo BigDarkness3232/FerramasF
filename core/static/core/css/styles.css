@@ -1,5 +1,9 @@
+
 .c-item{
     height: 450px;
+    position: relative;
+
+    
 }
 
 .c-img{
@@ -33,3 +37,4 @@
 
   }
 
+  

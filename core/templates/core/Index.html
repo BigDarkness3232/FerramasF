@@ -2,6 +2,66 @@
 {% load static %}
 {% load humanize %}
 {% block contenido %}
+<link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Actor&display=swap");
+
+    body {
+        background: rgb(255,255,255);
+        background: linear-gradient(158deg, rgba(255,255,255,1) 13%, rgba(104,111,126,1) 41%, rgba(38,68,129,1) 100%);
+        font-family: "Actor", sans-serif;
+    }
+
+    svg {
+        font-family: "Actor", sans-serif;
+        width: 100%;
+        height: 100%;
+    }
+
+    svg text {
+        animation: stroke 5s infinite alternate;
+        stroke-width: 2;
+        stroke: #365FA0;
+        font-size: 100px;
+    }
+
+    @keyframes stroke {
+        0% {
+            fill: rgba(72, 138, 204, 0);
+            stroke: rgba(54, 95, 160, 1);
+            stroke-dashoffset: 25%;
+            stroke-dasharray: 0 50%;
+            stroke-width: 2;
+        }
+
+        70% {
+            fill: rgba(72, 138, 204, 0);
+            stroke: rgba(54, 95, 160, 1);
+        }
+
+        80% {
+            fill: rgba(72, 138, 204, 0);
+            stroke: rgba(54, 95, 160, 1);
+            stroke-width: 3;
+        }
+
+        100% {
+            fill: rgba(72, 138, 204, 1);
+            stroke: rgba(54, 95, 160, 0);
+            stroke-dashoffset: -25%;
+            stroke-dasharray: 50% 0;
+            stroke-width: 0;
+        }
+    }
+
+    .wrapper {
+        background-color: #ffffff37
+    };
+
+
+</style>
+
 
 <body>
     <!-- Carrusel-->
@@ -16,28 +76,51 @@
         <div class="carousel-inner">
 
             <div class="carousel-item active c-item">
-                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100" alt="...">
+                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100"
+                    alt="...">
                 <div class="carousel-caption top-0 mt-2">
-                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                    <div class="wrapper">
+                        <svg>
+                            <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                                Ferramas
+                            </text>
+                        </svg>
+                    </div>
                 </div>
             </div>
+
 
             <div class="carousel-item c-item">
                 <img src="{% static 'core/img/soldar.jpg' %}" class="c-img d-block w-100" alt="...">
+
                 <div class="carousel-caption top-0 mt-2">
-                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                    <div class="wrapper">
+                        <svg>
+                            <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                                Ferramas
+                            </text>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
             <div class="carousel-item c-item">
-                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100" alt="...">
+                <img src="{% static 'core/img/funciones-del-jefe-de-compras-6.png' %}" class="c-img d-block w-100"
+                    alt="...">
                 <div class="carousel-caption top-0 mt-2">
-                    <p class="mt-5 fs-3 text-uppercase" style="-webkit-text-stroke: 1px; -webkit-text-stroke-color: black;">Ferramas</p>
+                    <div class="wrapper">
+                        <svg>
+                            <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                                Ferramas
+                            </text>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
+
 
     <button class="carousel-control-prev" type="button" data-bs-target="#mainCarrusel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -54,7 +137,9 @@
         <div class="row">
             <div class="col-2 d-none d-lg-block"></div>
             <div class="col-8 text-center">
-                <h1>Todos los productos</h1>
+                <h1 style="color: white; font-weight: bold;
+                -webkit-text-stroke-width: 0.01px;
+                -webkit-text-stroke-color: rgb(0, 0, 0);" class="GFG">Todos los productos</h1>
             </div>
             <div class="col-2 d-none d-lg-block"></div>
         </div>
@@ -69,38 +154,41 @@
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" style="margin: 15px;">
                         <div class="card carta-producto" style="width: 250px;">
                             {% if aux.imagen %}
-                            <img class="card-img-top c-img" src="{{ aux.imagen }}" alt="Card image" style="height: 300px;">
+                            <img class="card-img-top c-img" src="media/{{ MEDIA_URL }}{{ aux.imagen }}" alt="Card image"
+                                style="height: 300px;">
                             {% else %}
-                            <img class="card-img-top c-img" src="{% static 'core/img/imagen not found.png' %}" alt="Card image" style="height: 300px;">
+                            <img class="card-img-top c-img" src="{% static 'core/img/imagen not found.png' %}"
+                                alt="Card image" style="height: 300px;">
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ aux.marca | capfirst }}</h5>
-                                <p class="card-text">{{ aux.nombre_producto | title }}</p>
+                                <p class="card-text">{{ aux.nombre | title }}</p>
                                 <h5 class="card-title">${{ aux.precio }}</h5>
                                 <p class="text-muted">Stock: {{ aux.stock }}</p>
                             </div>
                             <div class="card-footer mx-auto" style="border: none; text-align: center;">
                                 {% if user.is_authenticated %}
-                                    {% if aux.stock == 0 %}
-                                    <p>No disponible</p>
-                                    {% else %}
-                                    <a href="{% url 'carrito_agregar' aux.id %}" class="link-secondary"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
-                                    {% endif %}
+                                {% if aux.stock == 0 %}
+                                <p>No disponible</p>
+                                {% else %}
+                                <a href="{% url 'carrito_agregar' aux.id %}" class="link-secondary"><i
+                                        class="fa-solid fa-cart-shopping fa-lg"></i></a>
+                                {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-                    
 
-    <div class="container-fluid p-3">
-        <div class="row">
-            <div class="col-2 d-none d-lg-block"></div>
-            <div class="col-8 text-center">
-                <!-- {% include 'core/paginator.html' %} -->
-            </div>
-            <div class="col-2 d-none d-lg-block"></div>
-        </div>
-    </div>
+
+                    <div class="container-fluid p-3">
+                        <div class="row">
+                            <div class="col-2 d-none d-lg-block"></div>
+                            <div class="col-8 text-center">
+                                <!-- {% include 'core/paginator.html' %} -->
+                            </div>
+                            <div class="col-2 d-none d-lg-block"></div>
+                        </div>
+                    </div>
 </body>
 {% endblock contenido %}

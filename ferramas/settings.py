@@ -158,7 +158,7 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 import os
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SUMMERNOTE_CONFIG = {}
 
 #config login

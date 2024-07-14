@@ -2,6 +2,8 @@
 {% load num_carrito %}
 {% load tags_usuario %}
 {% es_vendedor request as vendedor_flag %}
+{% es_bodeguero request as bodeguero_flag %}
+{% es_contador request as contador_flag %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,6 +67,7 @@
                                 {% if vendedor_flag %}
                                 <li><a class="dropdown-item" href="{% url 'menuadmin' %}"> <i class="fa-solid fa-list"></i>  Menu Productos</a></li>
                                 <li><a class="dropdown-item" href="{% url 'menupedidos' %}"> <i class="fa-solid fa-list-ol"></i>  Menu pedidos</a></li>
+                        
                                 {% endif %}
                             {% endif %}   
                             
